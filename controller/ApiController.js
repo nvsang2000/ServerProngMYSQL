@@ -6,16 +6,13 @@ const Consult = require("../models/consult");
 class ApiController {
   getAllConsult = async (req, res) => {
     try {
-      Consult.find(function (err, data) {
-        if (err)
+      Consult.find(function (result) {
+        if (result != null)
+          return res.status(200).json({ success: true, data: result });
+        else {
           return res
             .status(300)
-            .json({ success: false, message: "Get failed!" });
-        if (data) {
-          return res.status(200).json({
-            success: true,
-            data: data,
-          });
+            .json({ success: false, message: "ID does not exist!" });
         }
       });
     } catch (error) {
@@ -24,25 +21,20 @@ class ApiController {
   };
   getConsult = async (req, res) => {
     const consultID = req.params.id;
-    console.log(consultID);
     try {
-      Consult.findById(consultID, function (err, data) {
-        if (err)
+      Consult.findById(consultID, function (result) {
+        if (result != null)
+          return res.status(200).json({success: true,data: result});
+        else {
           return res
             .status(300)
-            .json({ success: false, message: "Get failed!" });
-        if (data) {
-          return res.status(200).json({
-            success: true,
-            data: data,
-          });
+            .json({ success: false, message: "ID does not exist!" });
         }
       });
     } catch (error) {
       return res.status(500).json({ success: false, message: error });
     }
   };
-
   postConsult = async (req, res) => {
     var errors = validationResult(req);
     var arrayError = errors.array();
@@ -77,5 +69,30 @@ class ApiController {
       return res.status(500).json({ success: false, message: error });
     }
   };
+  deleteConsult = async(req, res) => {
+    const consultID = req.params.id
+    try {
+      const checkID = Consult.findById(consultID, function(err, data){
+        if (err)return false;
+        if (data) return true;
+      })
+      console.log("check id: ", checkID);
+      Consult.deleteById(consultID, function(err, data){
+        if (err)
+          return res
+            .status(300)
+            .json({ success: false, message: "Delete failed!" });
+        if (data) {
+          return res.status(200).json({
+            success: true,
+            message: "Delete successfully!",
+          });
+        }
+      })
+    } catch (error) {
+      
+    }
+
+  }
 }
 module.exports = new ApiController();

@@ -16,4 +16,6 @@ router.post(
   ApiController.postConsult
 );
 
+router.delete("/consult/:id", ApiController.deleteConsult)
+
 module.exports = router;
