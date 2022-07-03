@@ -14,7 +14,7 @@ var Consult = {
       callback
     );
   },
-  deleteSV: function (id, callback) {
+  deleteById: function (id, callback) {
     return db.query("delete from sinhvien where Id=?", [id], callback);
   },
   updateSV: function (id, sinhvien, callback) {
