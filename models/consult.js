@@ -5,12 +5,12 @@ var Consult = {
     return db.query("SELECT * FROM consult", callback);
   },
   findById: function (id, callback) {
-    return db.query("select * from consult where Id=?", [id], callback);
+    return db.query("select * from consult where id=?", [id], callback);
   },
-  addSV: function (sinhvien, callback) {
+  insert: function (consult, callback) {
     return db.query(
-      "Insert into sinhvien(name,class,dob) values(?,?,?)",
-      [sinhvien.name, sinhvien.class, sinhvien.dob],
+      "Insert into consult(name,place,url_image) values(?,?,?)",
+      [consult.name, consult.place, consult.url_image],
       callback
     );
   },
