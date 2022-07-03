@@ -19,11 +19,15 @@ var Consult = {
       }
     });
   },
-  insert: function (consult, callback) {
-    return db.query(
-      "Insert into consult(name,place,url_image) values(?,?,?)",
-      [consult.name, consult.place, consult.url_image],
-      callback
+  insert: function (consult, result) {
+    db.query(
+      "Insert into consult SET ?", consult, function (err, data) {
+        if (err || data.length == 0) {
+          return result(null);
+        } else {
+          return result({ id: data.insertId, ...consult });
+        }
+      }
     );
   },
   deleteById: function (id, callback) {
