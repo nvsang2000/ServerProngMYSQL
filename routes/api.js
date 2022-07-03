@@ -18,4 +18,10 @@ router.post(
 
 router.delete("/consult/:id", ApiController.deleteConsult)
 
+router.put(
+  "/consult/:id",
+  upload.single("url_image"),
+  ApiController.putConsult
+);
+
 module.exports = router;
