@@ -1,20 +1,21 @@
-const db = require('../db/connectDB')
+
+const Consult = require('../models/consult');
 
 class ApiController {
   getAllConsult = async (req, res) => {
-    var sqlString = "SELECT * FROM consult";
     try {
-      db.query(sqlString, function (error, results, fields) {
-        if (error)
-          throw res
-            .status(300)
-            .json({ success: false, message: "Get failed." });
-        return res.status(200).json({
-          success: true,
-          data: results,
-          message: "Get all consult.",
-        });
-      });
+       Consult.find(function (err, data) {
+         if (err)
+           return res
+             .status(300)
+             .json({ success: false, message: "Get failed." });
+         if (data) {
+           return res.status(200).json({
+             success: true,
+             data: data,
+           });
+         }
+       });
     } catch (error) {
       res.status(500).json({ success: false, message: error });
     }
@@ -22,18 +23,18 @@ class ApiController {
   getConsult = async (req, res) => {
     const consultID = req.params.id;
     console.log(consultID);
-    var sqlString = "SELECT * FROM consult WHERE id = " + consultID;
     try {
-      db.query(sqlString, function (error, results, fields) {
-        if (error)
-          throw res
+      Consult.findById(consultID , function (err, data) {
+        if (err)
+          return res
             .status(300)
             .json({ success: false, message: "Get failed." });
-        return res.status(200).json({
-          success: true,
-          data: results,
-          message: "Get consult.",
-        });
+        if (data) {
+          return res.status(200).json({
+            success: true,
+            data: data,
+          });
+        }
       });
     } catch (error) {
       res.status(500).json({ success: false, message: error });
