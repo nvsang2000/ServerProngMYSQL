@@ -29,7 +29,11 @@ var Magazine = {
     });
   },
   deleteById: function (id, callback) {
-    return db.query("delete from magazine where Id=?", [id], callback);
+    return db.query(
+      "update magazine set isDelete=true where Id=?",
+      [id],
+      callback
+    );
   },
   update: function (id, magazine, result) {
     db.query(

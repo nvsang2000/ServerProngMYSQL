@@ -29,7 +29,11 @@ var Equipment = {
     });
   },
   deleteById: function (id, callback) {
-    return db.query("delete from equipment where Id=?", [id], callback);
+    return db.query(
+      "update equipment set isDelete=true where Id=?",
+      [id],
+      callback
+    );
   },
   update: function (id, equipment, result) {
     db.query(

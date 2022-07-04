@@ -19,7 +19,7 @@ router.post(
   ConsultController.postConsult
 );
 
-router.delete("/consult/:id", ConsultController.deleteConsult)
+router.patch("/consult/:id", ConsultController.deleteConsult)
 
 router.put(
   "/consult/:id",

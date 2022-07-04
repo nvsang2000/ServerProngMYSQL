@@ -29,7 +29,7 @@ var Consult = {
     });
   },
   deleteById: function (id, callback) {
-    return db.query("delete from consult where Id=?", [id], callback);
+    return db.query("update consult set isDelete=true where Id=?", [id], callback);
   },
   update: function (id, consult, result) {
     db.query(
