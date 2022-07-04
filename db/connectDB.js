@@ -1,9 +1,9 @@
 var mysql = require("mysql");
 var connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Sang260720@", //pls setting password your database.
-  database: "PRONGDB",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD, //pls setting password your database.
+  database: process.env.DB_DATABASE,
 });
 
 connection.connect(function (err) {
