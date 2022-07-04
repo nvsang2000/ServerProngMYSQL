@@ -3,9 +3,11 @@ var router = express.Router();
 
 const ConsultController = require('../controller/api/ConsultController');
 const EquipmentController = require('../controller/api/EquipmentController');
+const MagazineController = require('../controller/api/MagazineController')
 const upload = require('../middleware/upload');
 const validate = require('../validation/validateForm');
 
+// API consult
 router.get("/consult", ConsultController.getAllConsult);
 
 router.get("/consult/:id", ConsultController.getConsult);
@@ -45,4 +47,24 @@ router.put(
   validate.validateEquipment(),
   EquipmentController.putEquipment
 );
+
+// API magazine
+router.get("/magazine", MagazineController.getAllMagazine);
+
+router.get("/magazine/:id", MagazineController.getMagazine);
+
+router.post(
+  "/magazine",
+  validate.validateMagazine(),
+  MagazineController.postMagazine
+);
+
+router.delete("/magazine/:id", MagazineController.deleteMagazine);
+
+router.put(
+  "/magazine/:id",
+  validate.validateMagazine(),
+  MagazineController.putMagazine
+);
+
 module.exports = router;
