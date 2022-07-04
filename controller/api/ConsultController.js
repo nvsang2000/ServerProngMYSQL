@@ -1,10 +1,9 @@
-const { json } = require("express");
 const { validationResult } = require("express-validator");
 
-const cloudinary = require("../middleware/cloudinary");
-const Consult = require("../models/consult");
+const cloudinary = require("../../middleware/cloudinary");
+const Consult = require("../../models/consult");
 
-class ApiController {
+class ConsultController {
   getAllConsult = async (req, res) => {
     try {
       await Consult.find(function (result) {
@@ -64,7 +63,7 @@ class ApiController {
       return res.status(500).json({ success: false, message: error });
     }
   };
-  deleteConsult = async(req, res) => {
+  deleteConsult = async (req, res) => {
     const consultID = req.params.id;
     try {
       await Consult.findById(consultID, function (result) {
@@ -86,8 +85,17 @@ class ApiController {
       return res.status(500).json({ success: false, message: error });
     }
   };
-  putConsult = async(req, res) => {
+  putConsult = async (req, res) => {
     const consultID = req.params.id;
+    var errors = validationResult(req);
+    var arrayError = errors.array();
+    if (arrayError.length > 0) {
+      var message = [];
+      arrayError.forEach((element) => {
+        message.push(element.msg);
+      });
+      return res.status(500).json({ success: false, message: message });
+    }
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
         upload_preset: "upload_avata",
@@ -102,7 +110,7 @@ class ApiController {
               return res.status(200).json({
                 success: true,
                 message: "Update successfully!",
-                data: result
+                data: result,
               });
           });
         } else {
@@ -114,6 +122,7 @@ class ApiController {
     } catch (error) {
       return res.status(500).json({ success: false, message: error });
     }
-  }
+  };
+
 }
-module.exports = new ApiController();
+module.exports = new ConsultController();
