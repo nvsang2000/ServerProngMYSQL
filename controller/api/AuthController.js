@@ -20,34 +20,43 @@ class AuthController {
   };
   login = async (req, res) => {
     const { email, password } = req.body;
-
-    if (!email || !password)
-      return res
-        .status(303)
-        .json({ success: false, message: "Missing email or password" });
-    try {
-      const user = await Auth.findById({ email });
-      if (!user)
-        return res
-          .status(300)
-          .json({ success: false, message: "Email already exists" });
-      const passwordValid = await bcrypt.compare(password, user.password);
-      if (!passwordValid)
-        return res
-          .status(300)
-          .json({ success: false, message: "Password already exists" });
-
-      const accessToken = jwt.sign(
-        { user_id: user._id },
-        process.env.ACCESS_TOKEN
-      );
-
-      res.status(200).json({
-        success: true,
-        message: "login successfully",
-        token: accessToken,
-        data: user,
+    var errors = validationResult(req);
+    var arrayError = errors.array();
+    if (arrayError.length > 0) {
+      var message = [];
+      arrayError.forEach((element) => {
+        message.push(element.msg);
       });
+      return res.status(500).json({ success: false, message: message });
+    }
+    try {
+      await Auth.findById(email, async function (result) {
+         if (result != null) {
+          const passwordValid = await bcrypt.compare(
+            password,
+            result[0].password
+          );
+          if (!passwordValid)
+            return res.status(300).json({ 
+              success: false, 
+              message: "Password already exists" 
+            });
+
+          const accessToken = jwt.sign(
+            { user_id: result.id },
+            process.env.ACCESS_TOKEN
+          );
+          return res.status(200).json({
+            success: true,
+            token: accessToken,
+          });
+         }else{
+          return res.status(300).json({
+            success: false,
+            message: "Email does not exist",
+          });
+         }
+      }); 
     } catch (error) {
       return res.status(500).json({ success: false, message: "server error" });
     }
@@ -67,6 +76,7 @@ class AuthController {
     try {
       await Auth.findById(email, async function (result) {
         if (result === null) {
+          console.log(result.password);
           const salt = await bcrypt.genSalt(10);
           const hasPassword = await bcrypt.hash(password, salt);
           req.body.password = hasPassword;

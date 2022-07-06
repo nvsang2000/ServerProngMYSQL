@@ -3,9 +3,13 @@ var router = express.Router();
 
 const ConsultController = require('../controller/api/ConsultController');
 const EquipmentController = require('../controller/api/EquipmentController');
-const MagazineController = require('../controller/api/MagazineController')
+const MagazineController = require('../controller/api/MagazineController');
+const AuthController = require('../controller/api/AuthController');
 const upload = require('../middleware/upload');
 const validate = require('../validation/validateForm');
+
+//get user
+router.get("/user", AuthController.getAuth);
 
 // API consult
 router.get("/consult", ConsultController.getAllConsult);
@@ -66,5 +70,6 @@ router.put(
   validate.validateMagazine(),
   MagazineController.putMagazine
 );
+
 
 module.exports = router;

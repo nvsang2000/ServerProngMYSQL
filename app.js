@@ -7,6 +7,7 @@ var bodyParser = require("body-parser");
 var logger = require("morgan");
 
 const connection = require("./db/connectDB");
+const verifyToken = require("./middleware/verifyToken")
 
 var apiRouter = require("./routes/api");
 var authRouter = require("./routes/auth");
@@ -27,7 +28,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // override with the X-HTTP-Method-Override header in the request
 
-app.use("/api", apiRouter);
+app.use("/api", verifyToken, apiRouter);
 app.use("/auth", authRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

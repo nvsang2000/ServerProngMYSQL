@@ -1,4 +1,4 @@
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.header("Authorization");
@@ -9,7 +9,7 @@ const verifyToken = (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    return res.status(500).json({ success: false, message: "Token Fail" });
+    return res.json({ success: false, message: "Token Fail" });
   }
 };
 

@@ -36,10 +36,25 @@ const validateAuth = () => {
       .withMessage("Please enter the correct format email!"),
   ];
 };
+const validateAuthLogin = () => {
+  return [
+    body("password")
+      .notEmpty()
+      .withMessage("Please provide password!")
+      .isLength({ min: 4, max: 16 })
+      .withMessage("Please provide your Password from 4-16 character!"),
+    body("email")
+      .notEmpty()
+      .withMessage("Please provide email!")
+      .isEmail()
+      .withMessage("Please enter the correct format email!"),
+  ];
+};
 
 module.exports = {
   validateConsult,
   validateEquipment,
   validateMagazine,
-  validateAuth
+  validateAuth,
+  validateAuthLogin,
 };
