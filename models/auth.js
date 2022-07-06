@@ -10,8 +10,8 @@ var Auth = {
       }
     });
   },
-  findById: function (id, result) {
-    db.query("select * from auth where id=?", [id], function (err, data) {
+  findById: function (email, result) {
+    db.query("select * from auth where email=?", [email], function (err, data) {
       if (err || data.length == 0) {
         return result(null);
       } else {
@@ -29,11 +29,7 @@ var Auth = {
     });
   },
   deleteById: function (id, callback) {
-    return db.query(
-      "update auth set isDelete=true where Id=?",
-      [id],
-      callback
-    );
+    return db.query("update auth set isDelete=true where Id=?", [id], callback);
   },
   update: function (id, auth, result) {
     db.query(
