@@ -4,6 +4,7 @@ const validateConsult = () => {
   return [
     body("name").notEmpty().withMessage("Please provide name!"),
     body("place").notEmpty().withMessage("Please provide place!"),
+  //  body("url_image").notEmpty().withMessage("Please choose photo!"),
   ];
 };
 

@@ -4,35 +4,41 @@ var Consult = {
   find: function (result) {
     db.query("SELECT * FROM consult", function (err, data) {
       if (err || data.length == 0) {
-        return result(null);
+        result(err, null);
       } else {
-        return result(data);
+        result(null, data);
       }
     });
   },
   findById: function (id, result) {
     db.query("SELECT * FROM consult WHERE id=?", [id], function (err, data) {
       if (err || data.length == 0) {
-        return result(null);
+        result(err, null);
       } else {
-        return result(data);
+        result(null, data);
       }
     });
   },
   insert: function (consult, result) {
     db.query("INSERT INTO consult SET ?", consult, function (err, data) {
       if (err || data.length == 0) {
-        return result(null);
+        return result(err, null);
       } else {
-        return result({ id: data.insertId, ...consult });
+        return result(null, { id: data.insertId, ...consult });
       }
     });
   },
-  deleteById: function (id, callback) {
+  deleteById: function (id, result) {
     return db.query(
       "UPDATE consult SET isDelete=true WHERE Id=?",
       [id],
-      callback
+      function (err, data) {
+        if (err || data.length == 0) {
+          return result(err, null);
+        } else {
+          return result(null, data);
+        }
+      }
     );
   },
   update: function (id, consult, result) {
@@ -41,9 +47,9 @@ var Consult = {
       [consult.name, consult.place, consult.url_image, id],
       function (err, data) {
         if (err || data.length == 0) {
-          return result(null);
+          return result(err, null);
         } else {
-          return result({ id: data.insertId, ...consult });
+          return result(null,{ id: data.insertId, ...consult });
         }
       }
     );

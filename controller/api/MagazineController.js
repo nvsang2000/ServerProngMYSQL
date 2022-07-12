@@ -4,10 +4,10 @@ const cloudinary = require("../../middleware/cloudinary");
 const Magazine = require("../../models/magazine");
 
 class MagazineController {
-  getAllMagazine = async (req, res) => {
+  getAllMagazine = (req, res) => {
     try {
-      await Magazine.find(function (result) {
-        if (result != null)
+      Magazine.find(function (err, result) {
+        if (result)
           return res.status(200).json({ success: true, data: result });
         else {
           return res.status(300).json({ success: false, message: "Get null!" });
@@ -17,11 +17,11 @@ class MagazineController {
       return res.status(500).json({ success: false, message: error });
     }
   };
-  getMagazine = async (req, res) => {
+  getMagazine = (req, res) => {
     const MagazineID = req.params.id;
     try {
-      Magazine.findById(MagazineID, function (result) {
-        if (result != null)
+      Magazine.findById(MagazineID, function (err, result) {
+        if (result)
           return res.status(200).json({ success: true, data: result });
         else {
           return res
@@ -45,26 +45,26 @@ class MagazineController {
     }
     console.log("data: ", req.body);
     try {
-      await Magazine.insert(req.body, function (result) {
-        if (result != null)
+      Magazine.insert(req.body, function (err, result) {
+        if (result)
           return res.status(200).json({ success: true, data: result });
         else {
           return res
             .status(300)
-            .json({ success: false, message: "Add failed" });
+            .json({ success: false, message: err });
         }
       });
     } catch (error) {
       return res.status(500).json({ success: false, message: error });
     }
   };
-  deleteMagazine = async (req, res) => {
+  deleteMagazine = (req, res) => {
     const MagazineID = req.params.id;
     try {
-      await Magazine.findById(MagazineID, function (result) {
-        if (result != null) {
-          Magazine.deleteById(MagazineID, function (err, data) {
-            if (data)
+      Magazine.findById(MagazineID, function (err, result) {
+        if (result) {
+          Magazine.deleteById(MagazineID, function (err, result) {
+            if (result)
               return res.status(200).json({
                 success: true,
                 message: "Delete successfully!",
@@ -93,9 +93,9 @@ class MagazineController {
       return res.status(500).json({ success: false, message: message });
     }
     try {
-      await Magazine.findById(MagazineID, function (result) {
-        if (result != null) {
-          Magazine.update(MagazineID, req.body, function (result) {
+      Magazine.findById(MagazineID, function (err, result) {
+        if (result) {
+          Magazine.update(MagazineID, req.body, function (err, result) {
             if (result)
               return res.status(200).json({
                 success: true,

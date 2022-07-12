@@ -4,27 +4,27 @@ var Auth = {
   find: function (result) {
     db.query("SELECT * FROM auth", function (err, data) {
       if (err || data.length == 0) {
-        return result(null);
+        result(err, null);
       } else {
-        return result(data);
+        result(null, data);
       }
     });
   },
   findById: function (email, result) {
     db.query("SELECT * FROM auth WHERE email=?", [email], function (err, data) {
       if (err || data.length == 0) {
-        return result(null);
+        result(err, null);
       } else {
-        return result(data);
+        result(null, data);
       }
     });
   },
   insert: function (auth, result) {
     db.query("INSERT INTO auth SET ?", auth, function (err, data) {
       if (err || data.length == 0) {
-        return result(null);
+        return result(err,null);
       } else {
-        return result({ id: data.insertId, ...auth });
+        return result(null,{ id: data.insertId, ...auth });
       }
     });
   },

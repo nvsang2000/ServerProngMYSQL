@@ -4,24 +4,24 @@ const cloudinary = require("../../middleware/cloudinary");
 const Consult = require("../../models/consult");
 
 class ConsultController {
-  getAllConsult = async (req, res) => {
+  getAllConsult = (req, res) => {
     try {
-      await Consult.find(function (result) {
-        if (result != null)
+      Consult.find(function (err, result) {
+        if (result)
           return res.status(200).json({ success: true, data: result });
         else {
-          return res.status(300).json({ success: false, message: "Get null!" });
+          return res.status(300).json({ success: false, message: err });
         }
       });
     } catch (error) {
       return res.status(500).json({ success: false, message: error });
     }
   };
-  getConsult = async (req, res) => {
+  getConsult = (req, res) => {
     const consultID = req.params.id;
     try {
-      Consult.findById(consultID, function (result) {
-        if (result != null)
+      Consult.findById(consultID, function (err, result) {
+        if (result)
           return res.status(200).json({ success: true, data: result });
         else {
           return res
@@ -50,30 +50,31 @@ class ConsultController {
       req.body.url_image = result.url;
     }
     try {
-      await Consult.insert(req.body, function (result) {
-        if (result != null)
+      Consult.insert(req.body, function (err, result) {
+        if (result)
           return res.status(200).json({ success: true, data: result });
         else {
-          return res
-            .status(300)
-            .json({ success: false, message: "Add failed" });
+          return res.status(300).json({ success: false, message: err });
         }
       });
     } catch (error) {
       return res.status(500).json({ success: false, message: error });
     }
   };
-  deleteConsult = async (req, res) => {
+  deleteConsult = (req, res) => {
     const consultID = req.params.id;
     try {
-      await Consult.findById(consultID, function (result) {
-        if (result != null) {
-          Consult.deleteById(consultID, function (err, data) {
-            if (data)
+      Consult.findById(consultID, function (err, result) {
+        if (result) {
+          Consult.deleteById(consultID, function (err, result) {
+            if (result)
               return res.status(200).json({
                 success: true,
                 message: "Delete successfully!",
               });
+            else {
+              return res.status(300).json({ success: false, message: err });
+            }
           });
         } else {
           return res
@@ -103,9 +104,9 @@ class ConsultController {
       req.body.url_image = result.url;
     }
     try {
-      await Consult.findById(consultID, function (result) {
-        if (result != null) {
-          Consult.update(consultID, req.body, function (result) {
+      Consult.findById(consultID, function (err, result) {
+        if (result) {
+          Consult.update(consultID, req.body, function (err, result) {
             if (result)
               return res.status(200).json({
                 success: true,

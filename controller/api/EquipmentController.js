@@ -6,8 +6,8 @@ const Equipment = require("../../models/equipment");
 class EquipmentController {
   getAllEquipment = async (req, res) => {
     try {
-      await Equipment.find(function (result) {
-        if (result != null)
+      Equipment.find(function (err, result) {
+        if (result)
           return res.status(200).json({ success: true, data: result });
         else {
           return res.status(300).json({ success: false, message: "Get null!" });
@@ -17,11 +17,11 @@ class EquipmentController {
       return res.status(500).json({ success: false, message: error });
     }
   };
-  getEquipment = async (req, res) => {
+  getEquipment = (req, res) => {
     const equipmentID = req.params.id;
     try {
-      Equipment.findById(equipmentID, function (result) {
-        if (result != null)
+      Equipment.findById(equipmentID, function (err, result) {
+        if (result)
           return res.status(200).json({ success: true, data: result });
         else {
           return res
@@ -50,13 +50,11 @@ class EquipmentController {
       req.body.url_image = result.url;
     }
     try {
-      await Equipment.insert(req.body, function (result) {
-        if (result != null)
+      Equipment.insert(req.body, function (err, result) {
+        if (result)
           return res.status(200).json({ success: true, data: result });
         else {
-          return res
-            .status(300)
-            .json({ success: false, message: "Add failed" });
+          return res.status(300).json({ success: false, message: err });
         }
       });
     } catch (error) {
@@ -66,10 +64,10 @@ class EquipmentController {
   deleteEquipment = async (req, res) => {
     const equipmentID = req.params.id;
     try {
-      await Equipment.findById(equipmentID, function (result) {
-        if (result != null) {
-          Equipment.deleteById(equipmentID, function (err, data) {
-            if (data)
+      Equipment.findById(equipmentID, function (err, result) {
+        if (result) {
+          Equipment.deleteById(equipmentID, function (err, result) {
+            if (result)
               return res.status(200).json({
                 success: true,
                 message: "Delete successfully!",
@@ -104,9 +102,9 @@ class EquipmentController {
       req.body.url_image = result.url;
     }
     try {
-      await Equipment.findById(equipmentID, function (result) {
-        if (result != null) {
-          Equipment.update(equipmentID, req.body, function (result) {
+      Equipment.findById(equipmentID, function (err, result) {
+        if (result) {
+          Equipment.update(equipmentID, req.body, function (err, result) {
             if (result)
               return res.status(200).json({
                 success: true,

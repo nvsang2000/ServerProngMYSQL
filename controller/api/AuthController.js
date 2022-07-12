@@ -5,10 +5,10 @@ const jwt = require("jsonwebtoken");
 const Auth = require("../../models/auth");
 
 class AuthController {
-  getAuth = async (req, res) => {
+  getAuth = (req, res) => {
     try {
-      await Auth.find(function (result) {
-        if (result != null)
+      Auth.find(function (err, result) {
+        if (result)
           return res.status(200).json({ success: true, data: result });
         else {
           return res.status(300).json({ success: false, message: "Get null!" });
@@ -30,16 +30,16 @@ class AuthController {
       return res.status(500).json({ success: false, message: message });
     }
     try {
-      await Auth.findById(email, async function (result) {
-         if (result != null) {
+      Auth.findById(email, async function (err, result) {
+        if (result) {
           const passwordValid = await bcrypt.compare(
             password,
             result[0].password
           );
           if (!passwordValid)
-            return res.status(300).json({ 
-              success: false, 
-              message: "Password already exists" 
+            return res.status(300).json({
+              success: false,
+              message: "Password already exists",
             });
 
           const accessToken = jwt.sign(
@@ -50,12 +50,12 @@ class AuthController {
             success: true,
             token: accessToken,
           });
-         }else{
+        } else {
           return res.status(300).json({
             success: false,
             message: "Email does not exist",
           });
-         }
+        }
       }); 
     } catch (error) {
       return res.status(500).json({ success: false, message: "server error" });
@@ -74,14 +74,13 @@ class AuthController {
     }
 
     try {
-      await Auth.findById(email, async function (result) {
-        if (result === null) {
-          console.log(result.password);
+      Auth.findById(email, async function (err, result) {
+        if (result === null ) {
           const salt = await bcrypt.genSalt(10);
           const hasPassword = await bcrypt.hash(password, salt);
           req.body.password = hasPassword;
-          await Auth.insert(req.body, function (result) {
-            if (result != null) {
+          Auth.insert(req.body, function (err, result) {
+            if (result) {
               const accessToken = jwt.sign(
                 { user_id: result.id },
                 process.env.ACCESS_TOKEN
@@ -94,9 +93,7 @@ class AuthController {
                 .status(200)
                 .json({ success: true, token: accessToken });
             } else {
-              return res
-                .status(300)
-                .json({ success: false, message: "Add failed" });
+              return res.status(300).json({ success: false, message: err });
             }
           });
         } else {
