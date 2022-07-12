@@ -11,7 +11,7 @@ var Auth = {
     });
   },
   findById: function (email, result) {
-    db.query("select * from auth where email=?", [email], function (err, data) {
+    db.query("SELECT * FROM auth WHERE email=?", [email], function (err, data) {
       if (err || data.length == 0) {
         return result(null);
       } else {
@@ -20,7 +20,7 @@ var Auth = {
     });
   },
   insert: function (auth, result) {
-    db.query("Insert into auth SET ?", auth, function (err, data) {
+    db.query("INSERT INTO auth SET ?", auth, function (err, data) {
       if (err || data.length == 0) {
         return result(null);
       } else {
@@ -29,11 +29,11 @@ var Auth = {
     });
   },
   deleteById: function (id, callback) {
-    return db.query("update auth set isDelete=true where Id=?", [id], callback);
+    return db.query("UPDATE auth SET isDelete=true WHERE Id=?", [id], callback);
   },
   update: function (id, auth, result) {
     db.query(
-      "update auth set name=?,place=?,url_image=? where Id=?",
+      "UPDATE auth SET name=?,place=?,url_image=? WHERE Id=?",
       [auth.name, auth.place, auth.url_image, id],
       function (err, data) {
         if (err || data.length == 0) {

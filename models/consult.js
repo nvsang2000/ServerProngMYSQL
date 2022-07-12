@@ -11,7 +11,7 @@ var Consult = {
     });
   },
   findById: function (id, result) {
-    db.query("select * from consult where id=?", [id], function (err, data) {
+    db.query("SELECT * FROM consult WHERE id=?", [id], function (err, data) {
       if (err || data.length == 0) {
         return result(null);
       } else {
@@ -20,7 +20,7 @@ var Consult = {
     });
   },
   insert: function (consult, result) {
-    db.query("Insert into consult SET ?", consult, function (err, data) {
+    db.query("INSERT INTO consult SET ?", consult, function (err, data) {
       if (err || data.length == 0) {
         return result(null);
       } else {
@@ -29,11 +29,15 @@ var Consult = {
     });
   },
   deleteById: function (id, callback) {
-    return db.query("update consult set isDelete=true where Id=?", [id], callback);
+    return db.query(
+      "UPDATE consult SET isDelete=true WHERE Id=?",
+      [id],
+      callback
+    );
   },
   update: function (id, consult, result) {
     db.query(
-      "update consult set name=?,place=?,url_image=? where Id=?",
+      "UPDATE consult SET name=?,place=?,url_image=? WHERE Id=?",
       [consult.name, consult.place, consult.url_image, id],
       function (err, data) {
         if (err || data.length == 0) {

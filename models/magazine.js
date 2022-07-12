@@ -11,7 +11,7 @@ var Magazine = {
     });
   },
   findById: function (id, result) {
-    db.query("select * from magazine where id=?", [id], function (err, data) {
+    db.query("SELECT * FROM magazine WHERE id=?", [id], function (err, data) {
       if (err || data.length == 0) {
         return result(null);
       } else {
@@ -20,7 +20,7 @@ var Magazine = {
     });
   },
   insert: function (magazine, result) {
-    db.query("Insert into magazine SET ?", magazine, function (err, data) {
+    db.query("INSERT INTO magazine SET ?", magazine, function (err, data) {
       if (err || data.length == 0) {
         return result(null);
       } else {
@@ -30,14 +30,14 @@ var Magazine = {
   },
   deleteById: function (id, callback) {
     return db.query(
-      "update magazine set isDelete=true where Id=?",
+      "UPDATE magazine SET isDelete=true WHERE Id=?",
       [id],
       callback
     );
   },
   update: function (id, magazine, result) {
     db.query(
-      "update magazine set name=?,place=?,area=? where Id=?",
+      "UPDATE magazine SET name=?,place=?,area=? WHERE Id=?",
       [magazine.name, magazine.place, magazine.area, id],
       function (err, data) {
         if (err || data.length == 0) {

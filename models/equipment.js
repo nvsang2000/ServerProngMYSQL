@@ -11,7 +11,7 @@ var Equipment = {
     });
   },
   findById: function (id, result) {
-    db.query("select * from equipment where id=?", [id], function (err, data) {
+    db.query("SELECT * FROM equipment WHERE id=?", [id], function (err, data) {
       if (err || data.length == 0) {
         return result(null);
       } else {
@@ -20,7 +20,7 @@ var Equipment = {
     });
   },
   insert: function (equipment, result) {
-    db.query("Insert into equipment SET ?", equipment, function (err, data) {
+    db.query("INSERT INTO equipment SET ?", equipment, function (err, data) {
       if (err || data.length == 0) {
         return result(null);
       } else {
@@ -30,14 +30,14 @@ var Equipment = {
   },
   deleteById: function (id, callback) {
     return db.query(
-      "update equipment set isDelete=true where Id=?",
+      "UPDATE equipment SET isDelete=true WHERE Id=?",
       [id],
       callback
     );
   },
   update: function (id, equipment, result) {
     db.query(
-      "update equipment set name=?,place=?,url_image=? where Id=?",
+      "UPDATE equipment SET name=?,place=?,url_image=? WHERE Id=?",
       [equipment.name, equipment.place, equipment.url_image, id],
       function (err, data) {
         if (err || data.length == 0) {
