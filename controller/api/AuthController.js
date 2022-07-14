@@ -1,8 +1,8 @@
-const { validationResult } = require("express-validator");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-
-const Auth = require("../../models/auth");
+var { validationResult } = require("express-validator");
+var bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
+var Auth = require("../../models/auth");
+var { MESSAGE } = require("../../constant/index");
 
 class AuthController {
   getAuth = (req, res) => {
@@ -11,14 +11,16 @@ class AuthController {
         if (result)
           return res.status(200).json({ success: true, data: result });
         else {
-          return res.status(300).json({ success: false, message: "Get null!" });
+          return res
+            .status(300)
+            .json({ success: false, message: MESSAGE.GET_NULL });
         }
       });
     } catch (error) {
-      return res.status(500).json({ success: false, message: error });
+      return res.status(500).json({ success: false, message: MESSAGE.SERVER_ERR });
     }
   };
-  login = async (req, res) => {
+  login = (req, res) => {
     const { email, password } = req.body;
     var errors = validationResult(req);
     var arrayError = errors.array();
@@ -32,15 +34,12 @@ class AuthController {
     try {
       Auth.findById(email, async function (err, result) {
         if (result) {
-          const passwordValid = await bcrypt.compare(
+          const passwordValid =await bcrypt.compare(
             password,
             result[0].password
           );
           if (!passwordValid)
-            return res.status(300).json({
-              success: false,
-              message: "Password already exists",
-            });
+            return res.status(300).json({success: false,message: MESSAGE.PASS_EXIT});
 
           const accessToken = jwt.sign(
             { user_id: result.id },
@@ -53,15 +52,15 @@ class AuthController {
         } else {
           return res.status(300).json({
             success: false,
-            message: "Email does not exist",
+            message: MESSAGE.EMAIL_NOT_EXIST,
           });
         }
       }); 
     } catch (error) {
-      return res.status(500).json({ success: false, message: "server error" });
+      return res.status(500).json({ success: false, message: MESSAGE.SERVER_ERR });
     }
   };
-  register = async (req, res) => {
+  register = (req, res) => {
     const { name, email, password } = req.body;
     var errors = validationResult(req);
     var arrayError = errors.array();
@@ -99,11 +98,11 @@ class AuthController {
         } else {
           return res
             .status(300)
-            .json({ success: false, message: "This email is registered!" });
+            .json({ success: false, message: MESSAGE.EMAIL_IS_REGISTER });
         }
       });
     } catch (error) {
-      return res.status(500).json({ success: false, message: "Server error" });
+      return res.status(500).json({ success: false, message: MESSAGE.SERVER_ERR});
     }
   };
 }

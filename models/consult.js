@@ -30,7 +30,7 @@ var Consult = {
   },
   deleteById: function (id, result) {
     return db.query(
-      "UPDATE consult SET isDelete=true WHERE Id=?",
+      "UPDATE consult SET isDelete=true WHERE id=?",
       [id],
       function (err, data) {
         if (err || data.length == 0) {
@@ -43,13 +43,13 @@ var Consult = {
   },
   update: function (id, consult, result) {
     db.query(
-      "UPDATE consult SET name=?,place=?,url_image=? WHERE Id=?",
+      "UPDATE consult SET name=?,place=?,url_image=? WHERE id=?",
       [consult.name, consult.place, consult.url_image, id],
       function (err, data) {
         if (err || data.length == 0) {
           return result(err, null);
         } else {
-          return result(null,{ id: data.insertId, ...consult });
+          return result(null, { id: data.insertId, ...consult });
         }
       }
     );

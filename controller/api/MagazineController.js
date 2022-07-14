@@ -1,7 +1,7 @@
-const { validationResult } = require("express-validator");
-
-const cloudinary = require("../../middleware/cloudinary");
-const Magazine = require("../../models/magazine");
+var { validationResult } = require("express-validator");
+var cloudinary = require("../../middleware/cloudinary");
+var Magazine = require("../../models/magazine");
+var { MESSAGE } = require("../../constant/index")
 
 class MagazineController {
   getAllMagazine = (req, res) => {
@@ -10,7 +10,7 @@ class MagazineController {
         if (result)
           return res.status(200).json({ success: true, data: result });
         else {
-          return res.status(300).json({ success: false, message: "Get null!" });
+          return res.status(300).json({ success: false, message: MESSAGE.GET_NULL });
         }
       });
     } catch (error) {
@@ -26,7 +26,7 @@ class MagazineController {
         else {
           return res
             .status(300)
-            .json({ success: false, message: "ID does not exist!" });
+            .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });
     } catch (error) {
@@ -67,13 +67,13 @@ class MagazineController {
             if (result)
               return res.status(200).json({
                 success: true,
-                message: "Delete successfully!",
+                message: MESSAGE.DELETE_SUCCESS,
               });
           });
         } else {
           return res
             .status(300)
-            .json({ success: false, message: "ID does not exist!" });
+            .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });
     } catch (error) {
@@ -99,14 +99,14 @@ class MagazineController {
             if (result)
               return res.status(200).json({
                 success: true,
-                message: "Update successfully!",
+                message: MESSAGE.UPDATE_SUCCESS,
                 data: result,
               });
           });
         } else {
           return res
             .status(300)
-            .json({ success: false, message: "ID does not exist!" });
+            .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });
     } catch (error) {

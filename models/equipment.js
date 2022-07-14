@@ -30,7 +30,7 @@ var Equipment = {
   },
   deleteById: function (id, result) {
     return db.query(
-      "UPDATE equipment SET isDelete=true WHERE Id=?",
+      "UPDATE equipment SET isDelete=true WHERE id=?",
       [id],
       function (err, data) {
         if (err || data.length == 0) {
@@ -43,13 +43,13 @@ var Equipment = {
   },
   update: function (id, equipment, result) {
     db.query(
-      "UPDATE equipment SET name=?,place=?,url_image=? WHERE Id=?",
+      "UPDATE equipment SET name=?,place=?,url_image=? WHERE id=?",
       [equipment.name, equipment.place, equipment.url_image, id],
       function (err, data) {
         if (err || data.length == 0) {
-          return result(err,null);
+          return result(err, null);
         } else {
-          return result(null,{ id: data.insertId, ...equipment });
+          return result(null, { id: data.insertId, ...equipment });
         }
       }
     );

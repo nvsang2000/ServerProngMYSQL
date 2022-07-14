@@ -29,11 +29,11 @@ var Auth = {
     });
   },
   deleteById: function (id, callback) {
-    return db.query("UPDATE auth SET isDelete=true WHERE Id=?", [id], callback);
+    return db.query("UPDATE auth SET isDelete=true WHERE id=?", [id], callback);
   },
   update: function (id, auth, result) {
     db.query(
-      "UPDATE auth SET name=?,place=?,url_image=? WHERE Id=?",
+      "UPDATE auth SET name=?,place=?,url_image=? WHERE id=?",
       [auth.name, auth.place, auth.url_image, id],
       function (err, data) {
         if (err || data.length == 0) {
