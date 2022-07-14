@@ -10,7 +10,7 @@ class MagazineController {
         if (result)
           return res.status(200).json({ success: true, data: result });
         else {
-          return res.status(300).json({ success: false, message: MESSAGE.GET_NULL });
+          return res.status(400).json({ success: false, message: MESSAGE.GET_NULL });
         }
       });
     } catch (error) {
@@ -25,7 +25,7 @@ class MagazineController {
           return res.status(200).json({ success: true, data: result });
         else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });
@@ -41,7 +41,7 @@ class MagazineController {
       arrayError.forEach((element) => {
         message.push(element.msg);
       });
-      return res.status(500).json({ success: false, message: message });
+      return res.status(400).json({ success: false, message: message });
     }
     console.log("data: ", req.body);
     try {
@@ -50,7 +50,7 @@ class MagazineController {
           return res.status(200).json({ success: true, data: result });
         else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: err });
         }
       });
@@ -72,7 +72,7 @@ class MagazineController {
           });
         } else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });
@@ -90,7 +90,7 @@ class MagazineController {
       arrayError.forEach((element) => {
         message.push(element.msg);
       });
-      return res.status(500).json({ success: false, message: message });
+      return res.status(400).json({ success: false, message: message });
     }
     try {
       Magazine.findById(MagazineID, function (err, result) {
@@ -105,7 +105,7 @@ class MagazineController {
           });
         } else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });

@@ -10,7 +10,7 @@ class EquipmentController {
         if (result)
           return res.status(200).json({ success: true, data: result });
         else {
-          return res.status(300).json({ success: false, message: MESSAGE.GET_NULL });
+          return res.status(400).json({ success: false, message: MESSAGE.GET_NULL });
         }
       });
     } catch (error) {
@@ -25,7 +25,7 @@ class EquipmentController {
           return res.status(200).json({ success: true, data: result });
         else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });
@@ -41,7 +41,7 @@ class EquipmentController {
       arrayError.forEach((element) => {
         message.push(element.msg);
       });
-      return res.status(500).json({ success: false, message: message });
+      return res.status(400).json({ success: false, message: message });
     }
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
@@ -54,7 +54,7 @@ class EquipmentController {
         if (result)
           return res.status(200).json({ success: true, data: result });
         else {
-          return res.status(300).json({ success: false, message: err });
+          return res.status(400).json({ success: false, message: err });
         }
       });
     } catch (error) {
@@ -75,7 +75,7 @@ class EquipmentController {
           });
         } else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });
@@ -93,7 +93,7 @@ class EquipmentController {
       arrayError.forEach((element) => {
         message.push(element.msg);
       });
-      return res.status(500).json({ success: false, message: message });
+      return res.status(400).json({ success: false, message: message });
     }
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
@@ -114,7 +114,7 @@ class EquipmentController {
           });
         } else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });

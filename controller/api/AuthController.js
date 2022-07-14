@@ -12,7 +12,7 @@ class AuthController {
           return res.status(200).json({ success: true, data: result });
         else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: MESSAGE.GET_NULL });
         }
       });
@@ -29,7 +29,7 @@ class AuthController {
       arrayError.forEach((element) => {
         message.push(element.msg);
       });
-      return res.status(500).json({ success: false, message: message });
+      return res.status(400).json({ success: false, message: message });
     }
     try {
       Auth.findById(email, async function (err, result) {
@@ -39,7 +39,7 @@ class AuthController {
             result[0].password
           );
           if (!passwordValid)
-            return res.status(300).json({success: false,message: MESSAGE.PASS_EXIT});
+            return res.status(400).json({success: false,message: MESSAGE.PASS_EXIT});
 
           const accessToken = jwt.sign(
             { user_id: result.id },
@@ -50,7 +50,7 @@ class AuthController {
             token: accessToken,
           });
         } else {
-          return res.status(300).json({
+          return res.status(400).json({
             success: false,
             message: MESSAGE.EMAIL_NOT_EXIST,
           });
@@ -92,12 +92,12 @@ class AuthController {
                 .status(200)
                 .json({ success: true, token: accessToken });
             } else {
-              return res.status(300).json({ success: false, message: err });
+              return res.status(400).json({ success: false, message: err });
             }
           });
         } else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: MESSAGE.EMAIL_IS_REGISTER });
         }
       });

@@ -1,7 +1,7 @@
 var { validationResult } = require("express-validator");
 var cloudinary = require("../../middleware/cloudinary");
 var Consult = require("../../models/consult");
-var { MESSAGE } = require("../../constant/index")
+var { MESSAGE } = require("../../constant/index");
 
 class ConsultController {
   getAllConsult = (req, res) => {
@@ -10,7 +10,7 @@ class ConsultController {
         if (result)
           return res.status(200).json({ success: true, data: result });
         else {
-          return res.status(300).json({ success: false, message: err });
+          return res.status(400).json({ success: false, message: err });
         }
       });
     } catch (error) {
@@ -25,7 +25,7 @@ class ConsultController {
           return res.status(200).json({ success: true, data: result });
         else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });
@@ -43,7 +43,7 @@ class ConsultController {
       arrayError.forEach((element) => {
         message.push(element.msg);
       });
-      return res.status(500).json({ success: false, message: message });
+      return res.status(400).json({ success: false, message: message });
     }
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
@@ -56,7 +56,7 @@ class ConsultController {
         if (result)
           return res.status(200).json({ success: true, data: result });
         else {
-          return res.status(300).json({ success: false, message: err });
+          return res.status(400).json({ success: false, message: err });
         }
       });
     } catch (error) {
@@ -77,12 +77,12 @@ class ConsultController {
                 message: MESSAGE.DELETE_SUCCESS,
               });
             else {
-              return res.status(300).json({ success: false, message: err });
+              return res.status(400).json({ success: false, message: err });
             }
           });
         } else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });
@@ -99,7 +99,7 @@ class ConsultController {
       arrayError.forEach((element) => {
         message.push(element.msg);
       });
-      return res.status(500).json({ success: false, message: message });
+      return res.status(400).json({ success: false, message: message });
     }
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
@@ -120,7 +120,7 @@ class ConsultController {
           });
         } else {
           return res
-            .status(300)
+            .status(400)
             .json({ success: false, message: MESSAGE.ID_NOT_EXIST });
         }
       });
