@@ -1,7 +1,7 @@
-var { validationResult } = require("express-validator");
-var cloudinary = require("../../middleware/cloudinary");
-var Equipment = require("../../models/equipment");
-var { MESSAGE } = require("../../constant/index");
+const { validationResult } = require("express-validator");
+const cloudinary = require("../../middleware/cloudinary");
+const Equipment = require("../../models/equipment");
+const { MESSAGE } = require("../../constant/index");
 
 class EquipmentController {
   getAllEquipment = async (req, res) => {

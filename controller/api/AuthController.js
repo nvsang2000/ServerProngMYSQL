@@ -1,8 +1,8 @@
-var { validationResult } = require("express-validator");
-var bcrypt = require("bcrypt");
-var jwt = require("jsonwebtoken");
-var Auth = require("../../models/auth");
-var { MESSAGE } = require("../../constant/index");
+const { validationResult } = require("express-validator");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const Auth = require("../../models/auth");
+const { MESSAGE } = require("../../constant/index");
 
 class AuthController {
   getAuth = (req, res) => {
@@ -69,7 +69,7 @@ class AuthController {
       arrayError.forEach((element) => {
         message.push(element.msg);
       });
-      return res.status(500).json({ success: false, message: message });
+      return res.status(400).json({ success: false, message: message });
     }
 
     try {

@@ -1,7 +1,7 @@
-var { validationResult } = require("express-validator");
-var cloudinary = require("../../middleware/cloudinary");
-var Consult = require("../../models/consult");
-var { MESSAGE } = require("../../constant/index");
+const { validationResult } = require("express-validator");
+const cloudinary = require("../../middleware/cloudinary");
+const Consult = require("../../models/consult");
+const { MESSAGE } = require("../../constant/index");
 
 class ConsultController {
   getAllConsult = (req, res) => {
